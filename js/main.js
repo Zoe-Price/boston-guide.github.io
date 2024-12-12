@@ -1,6 +1,21 @@
-const routesPath = "data/Rapid_Transit_Routes.geojson";
-const stopsPath = "data/Rapid_Transit_Stops.geojson";
-const accuracyPath = "data/rapid_transit_and_bus_prediction_accuracy_data.csv";
+Promise.all([
+    d3.json("data/Rapid_Transit_Routes.geojson").catch(error => {
+        console.error("Error loading routes:", error);
+        return null;
+    }),
+    d3.json("data/Rapid_Transit_Stops.geojson").catch(error => {
+        console.error("Error loading stops:", error);
+        return null;
+    })
+]).then(([routes, stops]) => {
+    if (!routes || !stops) {
+        console.error("Failed to load required data");
+        return;
+    }
+
+const routesPath = "/data/Rapid_Transit_Routes.geojson";
+const stopsPath = "/data/Rapid_Transit_Stops.geojson";
+const accuracyPath = "/data/rapid_transit_and_bus_prediction_accuracy_data.csv";
 
 const highlightColor = "#e8ca84";
 
