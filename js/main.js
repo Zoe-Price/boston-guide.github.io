@@ -1,21 +1,6 @@
-Promise.all([
-    d3.json("data/Rapid_Transit_Routes.geojson").catch(error => {
-        console.error("Error loading routes:", error);
-        return null;
-    }),
-    d3.json("data/Rapid_Transit_Stops.geojson").catch(error => {
-        console.error("Error loading stops:", error);
-        return null;
-    })
-]).then(([routes, stops]) => {
-    if (!routes || !stops) {
-        console.error("Failed to load required data");
-        return;
-    }
-
-const routesPath = "/data/Rapid_Transit_Routes.geojson";
-const stopsPath = "/data/Rapid_Transit_Stops.geojson";
-const accuracyPath = "/data/rapid_transit_and_bus_prediction_accuracy_data.csv";
+const routesPath = "data/Rapid_Transit_Routes.geojson";
+const stopsPath = "data/Rapid_Transit_Stops.geojson";
+const accuracyPath = "data/rapid_transit_and_bus_prediction_accuracy_data.csv";
 
 const highlightColor = "#e8ca84";
 
@@ -197,17 +182,14 @@ waterFeatures.append("path")
     .attr("opacity", 0.6);
 
 waterFeatures.append("path")
-    .attr("d", () => {
-        const start = projection([-71.035, 42.31]);
-        const point2 = projection([-71.01, 42.35]);
-        const point3 = [mapWidth, projection([-71.01, 42.89])[1]];
-        const point4 = [mapWidth, projection([-71.01, 42.1])[1] + 300];
-        
-        return `M ${start[0]},${start[1]} 
-                L ${point2[0]},${point2[1]} 
-                L ${point3[0]},${point3[1]} 
-                L ${point4[0]},${point4[1]} Z`;
-    })
+    .attr("d", `
+        M ${projection([-71.035, 42.31])[0]},${projection([-70, 42.3])[1]}
+        L ${projection([-71.01, 42.35])[0]},${projection([-71.01, 42.35])[1]}
+        L ${mapWidth },${projection([-71.01, 42.89])[1]}
+        L ${mapWidth},${projection([-71.01, 42.1])[1] + 300}  // Bottom right (from old rectangle)
+    `)
+    .attr("fill", "#84a7e3")
+    .attr("opacity", 0.6);
 
 
 //labels
@@ -958,10 +940,4 @@ function createCircularRidershipChart() {
 
 
 createCircularRidershipChart();
-
-
-
-
-
-
 
