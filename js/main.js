@@ -197,14 +197,17 @@ waterFeatures.append("path")
     .attr("opacity", 0.6);
 
 waterFeatures.append("path")
-    .attr("d", `
-        M ${projection([-71.035, 42.31])[0]},${projection([-70, 42.3])[1]}
-        L ${projection([-71.01, 42.35])[0]},${projection([-71.01, 42.35])[1]}
-        L ${mapWidth },${projection([-71.01, 42.89])[1]}
-        L ${mapWidth},${projection([-71.01, 42.1])[1] + 300}  // Bottom right (from old rectangle)
-    `)
-    .attr("fill", "#84a7e3")
-    .attr("opacity", 0.6);
+    .attr("d", () => {
+        const start = projection([-71.035, 42.31]);
+        const point2 = projection([-71.01, 42.35]);
+        const point3 = [mapWidth, projection([-71.01, 42.89])[1]];
+        const point4 = [mapWidth, projection([-71.01, 42.1])[1] + 300];
+        
+        return `M ${start[0]},${start[1]} 
+                L ${point2[0]},${point2[1]} 
+                L ${point3[0]},${point3[1]} 
+                L ${point4[0]},${point4[1]} Z`;
+    })
 
 
 //labels
